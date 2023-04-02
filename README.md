@@ -1,15 +1,15 @@
-# Playwright::Runner
+# PlaywrightRunner
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/playwright/runner`. To experiment with that code, run `bin/console` for an interactive prompt.
+PlaywrightRunner is a set of runners for [Playwright](https://playwright.dev/).
 
-TODO: Delete this and the text above, and describe your gem
+This module is intended to provide useful toolset for [Re:VIEW](https://reviewml.org/), but it can also be used for general purpose applications.
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'playwright-runner'
+gem 'playwrightrunner'
 ```
 
 And then execute:
@@ -20,20 +20,110 @@ Or install it yourself as:
 
     $ gem install playwright-runner
 
+Of course PlaywrightRunner needs Playwright npm library.
+
+    $ npm install playwright    (locally)
+    $ npm install -g playwright (globally)
+
 ## Usage
 
-TODO: Write usage instructions here
+### Mermaid to PDF or SVG
 
-## Development
+Let's convert HTML files contain [Mermaid](https://mermaid.js.org/) to PDF/SVG.
+You have to install two components also to crop and convert PDF before running:
 
-After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+- [pdfcrop](https://www.ctan.org/pkg/pdfcrop) in TeXLive.
+- [pdftocairo](https://gitlab.freedesktop.org/poppler/poppler) in poppler (if you'd like to get SVG).
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+On Debian GNU/Linux or its derivatives, ues `apt-get install texlive-extra-utils poppler-utils`.
 
-## Contributing
+```ruby
+PlaywrightRunner.mermaids_to_images(
+  {
+    playwright_path: './node_modules/.bin/playwright', // playwright binary path
+    pdfcrop_path: 'pdfcrop', // pdfcrop path
+    pdftocairo_path: 'pdftocairo' // pdftocairo path
+  },
+  src: '.', // source folder contains html files
+  dest: '.', // destination folder to export pdf or svg
+  type: 'pdf' // 'pdf' or 'svg'
+)
+```
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/playwright-runner.
+For Example, here is `p1.html` contains Mermaid code.
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs'; mermaid.initialize({ startOnLoad: true });</script>
+</head>
+<body>
+<div id="p1">
+<pre class="mermaid">
+graph TD
+A[Client] --> B[Load Balancer]
+B --> C[Server1]
+B --> D[Server2]
+</pre>
+</div>
+</body>
+</html>
+```
+
+Now convert it to PDF.
+
+```ruby
+require 'playwrightrunner'
+
+PlaywrightRunner.mermaids_to_images(
+  {
+    playwright_path: './node_modules/.bin/playwright' // modify for your env
+  },
+  src: '.',
+  dest: '.',
+  type: 'pdf'
+)
+```
+
+Convert it to SVG.
+
+```ruby
+require 'playwrightrunner'
+
+PlaywrightRunner.mermaids_to_images(
+  {
+    playwright_path: './node_modules/.bin/playwright' // modify for your env
+  },
+  src: '.',
+  dest: '.',
+  type: 'svg'
+)
+```
+
+![sample SVG](p1.svg)
 
 ## License
 
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+```
+Copyright (c) 2023 Kenshi Muto
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
