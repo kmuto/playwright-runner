@@ -14,7 +14,7 @@ class PlaywrightRunnerMermaidTest < Test::Unit::TestCase
     assert_nothing_raised do
       PlaywrightRunner.mermaids_to_images(
         PlaywrightRunner.complement_config({ playwright_path: '../node_modules/.bin/playwright' }),
-        { src: 'test/assets/src', dest: 'test/assets/dest', type: 'pdf' }
+        src: 'test/assets/src', dest: 'test/assets/dest', type: 'pdf'
       )
     end
     assert File.size('test/assets/dest/p1.pdf').positive?
@@ -28,7 +28,7 @@ class PlaywrightRunnerMermaidTest < Test::Unit::TestCase
     assert_nothing_raised do
       PlaywrightRunner.mermaids_to_images(
         PlaywrightRunner.complement_config({ playwright_path: '../node_modules/.bin/playwright' }),
-        { src: 'test/assets/src', dest: 'test/assets/dest', type: 'svg' }
+        src: 'test/assets/src', dest: 'test/assets/dest', type: 'svg'
       )
     end
     assert File.size('test/assets/dest/p1.svg').positive?

@@ -50,6 +50,8 @@ PlaywrightRunner.mermaids_to_images(
 )
 ```
 
+It converts all HTML files in the folder specified by `src` into PDF or SVG files (specified by `type`) using that name and writes them in the folder specified by `dest`.
+
 For Example, here is `p1.html` contains Mermaid code.
 
 ```html
@@ -72,7 +74,7 @@ B --> D[Server2]
 </html>
 ```
 
-Now convert it to PDF.
+Now convert it to PDF. `p1.pdf` will be created.
 
 ```ruby
 require 'playwrightrunner'
@@ -87,7 +89,7 @@ PlaywrightRunner.mermaids_to_images(
 )
 ```
 
-Convert it to SVG.
+Convert it to SVG. `p1.svg` will be created.
 
 ```ruby
 require 'playwrightrunner'
