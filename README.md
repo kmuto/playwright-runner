@@ -9,7 +9,7 @@ This module is intended to provide useful toolset for [Re:VIEW](https://reviewml
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'playwrightrunner'
+gem 'playwright-runner'
 ```
 
 And then execute:
