@@ -11,6 +11,9 @@ class PlaywrightRunnerMermaidTest < Test::Unit::TestCase
   end
 
   def test_mermaid_pdf
+    # skip
+    return if !system('pdftocairo -v') || !system('pdfcrop --version')
+
     assert_nothing_raised do
       PlaywrightRunner.mermaids_to_images(
         PlaywrightRunner.complement_config({ playwright_path: '../node_modules/.bin/playwright' }),
@@ -25,6 +28,9 @@ class PlaywrightRunnerMermaidTest < Test::Unit::TestCase
   end
 
   def test_mermaid_svg
+    # skip
+    return if !system('pdftocairo -v') || !system('pdfcrop --version')
+
     assert_nothing_raised do
       PlaywrightRunner.mermaids_to_images(
         PlaywrightRunner.complement_config({ playwright_path: '../node_modules/.bin/playwright' }),
