@@ -1,6 +1,6 @@
-# PlaywrightRunner
+# Playwright Runner
 
-PlaywrightRunner is a set of runners for [Playwright](https://playwright.dev/).
+Playwright Runner is a set of runners for [Playwright](https://playwright.dev/).
 
 This module is intended to provide useful toolset for [Re:VIEW](https://reviewml.org/), but it can also be used for general purpose applications.
 
