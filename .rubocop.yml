@@ -1,0 +1,17 @@
+AllCops:
+  DisplayCopNames: true
+  NewCops: enable
+  TargetRubyVersion: 2.7
+
+require:
+ - rubocop-performance
+ - rubocop-rake
+
+Metrics/MethodLength:
+  Max: 100
+
+Metrics/AbcSize:
+  Max: 120
+
+Style/Documentation:
+  Enabled: false
