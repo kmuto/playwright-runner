@@ -24,9 +24,20 @@ module PlaywrightRunner
         Dir.glob(File.join(src, '*.html')).each do |entry|
           id = File.basename(entry).sub('.html', '')
           page.goto("file:///#{File.absolute_path(entry)}")
-          page.locator('svg').click # to wait drawn
+          page.locator('svg').wait_for(state: 'visible')
+          sleep(1)
+          1.upto(4) do
+            bounds = page.locator('svg').bounding_box
 
-          page.pdf(path: File.join(dest, '__PLAYWRIGHT_TMP__.pdf'))
+            unless bounds
+              sleep(1)
+              next
+            end
+
+            page.pdf(path: File.join(dest, '__PLAYWRIGHT_TMP__.pdf'))
+            break
+          end
+
           Open3.capture2e(config[:pdfcrop_path],
                           File.join(dest, '__PLAYWRIGHT_TMP__.pdf'),
                           File.join(dest, "#{id}.pdf"))
