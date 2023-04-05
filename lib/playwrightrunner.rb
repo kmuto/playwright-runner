@@ -9,15 +9,19 @@ require 'open3'
 require 'fileutils'
 
 module PlaywrightRunner
-  def complement_config(config)
+  def default_config(config)
     config[:playwright_path] ||= './node_modules/.bin/playwright'
+
+    # for Mermaid
+    config[:selfcrop] = true if config[:selfcrop].nil?
     config[:pdfcrop_path] ||= 'pdfcrop'
     config[:pdftocairo_path] ||= 'pdftocairo'
 
     config
   end
 
-  def mermaids_to_images(config, src: '.', dest: '.', type: 'pdf')
+  def mermaids_to_images(passed_config, src: '.', dest: '.', type: 'pdf')
+    config = default_config(passed_config)
     Playwright.create(playwright_cli_executable_path: config[:playwright_path]) do |playwright|
       playwright.chromium.launch(headless: true) do |browser|
         page = browser.new_page
@@ -34,18 +38,39 @@ module PlaywrightRunner
               next
             end
 
-            page.pdf(path: File.join(dest, '__PLAYWRIGHT_TMP__.pdf'))
+            if config[:selfcrop]
+              x = bounds['x'].floor
+              y = bounds['y'].floor
+              width = bounds['width'].ceil
+              height = bounds['height'].ceil
+              page.set_viewport_size({ width: x + width, height: y + height })
+
+              if type == 'png'
+                page.screenshot(path: File.join(dest, "#{id}.png"), clip: { x: x, y: y, width: width, height: height })
+                break
+              end
+
+              page.pdf(path: File.join(dest, "#{id}.pdf"),
+                       width: "#{width + (x * 2)}px",
+                       height: "#{height + (y * 2)}px")
+            else
+              page.pdf(path: File.join(dest, '__PLAYWRIGHT_TMP__.pdf'))
+              Open3.capture2e(config[:pdfcrop_path],
+                              File.join(dest, '__PLAYWRIGHT_TMP__.pdf'),
+                              File.join(dest, "#{id}.pdf"))
+            end
+
             break
           end
-
-          Open3.capture2e(config[:pdfcrop_path],
-                          File.join(dest, '__PLAYWRIGHT_TMP__.pdf'),
-                          File.join(dest, "#{id}.pdf"))
 
           next unless type == 'svg'
 
           Open3.capture2e(config[:pdftocairo_path],
                           '-svg',
+                          '-f',
+                          '1',
+                          '-l',
+                          '1',
                           File.join(dest, "#{id}.pdf"),
                           File.join(dest, "#{id}.svg"))
           FileUtils.rm_f(File.join(dest, "#{id}.pdf"))
@@ -56,5 +81,5 @@ module PlaywrightRunner
     end
   end
 
-  module_function :complement_config, :mermaids_to_images
+  module_function :mermaids_to_images, :default_config
 end
