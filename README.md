@@ -38,18 +38,18 @@ On Debian GNU/Linux or its derivatives, ues `apt-get install texlive-extra-utils
 
 #### Syntax
 ```ruby
-config = { // you can omit them if you don't want to change anything
-  playwright_path: './node_modules/.bin/playwright', // playwright binary path
-  selfcrop: true, // use chromium's crop logic. if you'd like to use better cropping, set this to false
-  pdfcrop_path: 'pdfcrop', // pdfcrop path (will be ignored when selfcrop: true)
-  pdftocairo_path: 'pdftocairo' // pdftocairo path
+config = {  # you can omit them if you don't want to change anything
+  playwright_path: './node_modules/.bin/playwright',  # playwright binary path
+  selfcrop: true,  # use chromium's crop logic. if you'd like to use better cropping, set this to false
+  pdfcrop_path: 'pdfcrop',  # pdfcrop path (will be ignored when selfcrop: true)
+  pdftocairo_path: 'pdftocairo'  # pdftocairo path
 }
 
 PlaywrightRunner.mermaids_to_images(
-  config, // config hash. if you want to use default values, specify {}
-  src: '.', // source folder contains html files
-  dest: '.', // destination folder to export pdf or svg
-  type: 'pdf' // 'png', 'pdf', or 'svg'
+  config,  # config hash. if you want to use default values, specify {}
+  src: '.',  # source folder contains html files
+  dest: '.',  # destination folder to export pdf or svg
+  type: 'pdf'  # 'png', 'pdf', or 'svg'
 )
 ```
 
@@ -85,7 +85,7 @@ require 'playwrightrunner'
 
 PlaywrightRunner.mermaids_to_images(
   {
-    playwright_path: './node_modules/.bin/playwright' // modify for your env
+    playwright_path: './node_modules/.bin/playwright'  # modify for your env
   },
   src: '.',
   dest: '.',
@@ -100,8 +100,8 @@ require 'playwrightrunner'
 
 PlaywrightRunner.mermaids_to_images(
   {
-    playwright_path: './node_modules/.bin/playwright', // modify for your env
-    pdftocairo: 'pdftocairo' // set the path to your pdftocairo
+    playwright_path: './node_modules/.bin/playwright',  # modify for your env
+    pdftocairo: 'pdftocairo'  # set the path to your pdftocairo
   },
   src: '.',
   dest: '.',
@@ -118,7 +118,7 @@ require 'playwrightrunner'
 
 PlaywrightRunner.mermaids_to_images(
   {
-    playwright_path: './node_modules/.bin/playwright' // modify for your env
+    playwright_path: './node_modules/.bin/playwright'  # modify for your env
   },
   src: '.',
   dest: '.',
@@ -137,9 +137,9 @@ require 'playwrightrunner'
 
 PlaywrightRunner.mermaids_to_images(
   {
-    playwright_path: './node_modules/.bin/playwright' // modify for your env
+    playwright_path: './node_modules/.bin/playwright'  # modify for your env
     selfcrop: false,
-    pdfcrop_path: 'pdfcrop' // set the path to your pdfcrop
+    pdfcrop_path: 'pdfcrop'  # set the path to your pdfcrop
   },
   src: '.',
   dest: '.',
