@@ -16,7 +16,6 @@ Gem::Specification.new do |spec|
 
   spec.metadata['rubygems_mfa_required'] = 'true'
   spec.metadata['homepage_uri'] = spec.homepage
-  spec.metadata['source_code_uri'] = 'https://github.com/kmuto/playwright-runner'
   spec.metadata['changelog_uri'] = 'https://github.com/kmuto/playwright-runner/commits/main'
 
   # Specify which files should be added to the gem when it is released.
@@ -28,5 +27,5 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'playwright-ruby-client', '>= 1.28.0'
+  spec.add_dependency 'playwright-ruby-client', '~> 1.28'
 end
