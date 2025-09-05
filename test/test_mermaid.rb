@@ -6,6 +6,7 @@ require 'fileutils'
 class PlaywrightRunnerMermaidTest < Test::Unit::TestCase
   def setup
     system('npm install playwright') unless File.exist?('./node_modules/.bin/playwright')
+    system('npx playwright install chromium')
     FileUtils.rm_rf('test/assets/dest')
     FileUtils.mkdir('test/assets/dest')
   end
